@@ -58,11 +58,42 @@ RCT_EXPORT_METHOD(animateTo:(nonnull NSNumber *)reactTag params:(NSDictionary *)
         if (params[@"zoomLevel"]) {
             mapStatus.zoomLevel = [params[@"zoomLevel"] floatValue];
         }
-        if (params[@"coordinate"]) {
-            NSDictionary *coordinate = params[@"coordinate"];
-            mapStatus.centerCoordinate = CLLocationCoordinate2DMake(
-                    [coordinate[@"latitude"] doubleValue],
-                    [coordinate[@"longitude"] doubleValue]);
+          if(params[@"coordinates"]&&[params[@"coordinates"] count] > 0) {
+//            MAMapRect rect = MAMapRectZero;
+//            for (NSInteger i = 0; i < [params[@"coordinates"] count]; i++) {
+//                NSDictionary* dict = [params[@"coordinates"] objectAtIndex:i];
+//
+//                CLLocationCoordinate2D diagonalPoint = CLLocationCoordinate2DMake(mapView.centerCoordinate.latitude - ([[dict objectForKey:@"latitude"] doubleValue] - mapView.centerCoordinate.latitude),mapView.centerCoordinate.longitude - ([[dict objectForKey:@"longitude"] doubleValue] - mapView.centerCoordinate.longitude));
+//                CLLocationCoordinate2D location = CLLocationCoordinate2DMake([[dict objectForKey:@"latitude"] doubleValue],
+//                                                                             [[dict objectForKey:@"longitude"] doubleValue]);
+//                MAMapPoint annotationMapPoint = MAMapPointForCoordinate(location);
+////                MAMapPoint diagonalPointMapPoint = MAMapPointForCoordinate(diagonalPoint);
+//                MAMapPoint diagonalPointMapPoint = MAMapPointForCoordinate(location);
+//                ///根据annotation点和对角线点计算出对应的rect（相对于中心点）
+//                MAMapRect annotationRect = MAMapRectMake(MIN(annotationMapPoint.x, diagonalPointMapPoint.x), MIN(annotationMapPoint.y, diagonalPointMapPoint.y), ABS(annotationMapPoint.x - diagonalPointMapPoint.x), ABS(annotationMapPoint.y - diagonalPointMapPoint.y));
+//
+//                rect = MAMapRectUnion(rect, annotationRect);
+//            }
+            CLLocationCoordinate2D coordinates[[params[@"coordinates"] count]];
+            for (NSInteger i = 0; i < [params[@"coordinates"] count]-1; i++) {
+                NSDictionary* dict = [params[@"coordinates"] objectAtIndex:i];
+                coordinates[0].latitude = [[dict objectForKey:@"latitude"] doubleValue];
+                coordinates[0].longitude = [[dict objectForKey:@"longitude"] doubleValue];
+            }
+            MAPolygon *pol = [MAPolygon polygonWithCoordinates:coordinates count:[params[@"coordinates"] count]];
+            UIEdgeInsets insets = UIEdgeInsetsMake([params[@"paddingTop"] doubleValue]?:0,
+                                                   [params[@"paddingLeft"] doubleValue]?:0,
+                                                   [params[@"paddingBottom"] doubleValue]?:0,
+                                                   [params[@"paddingRight"] doubleValue]?:0);
+            [mapView setVisibleMapRect:pol.boundingMapRect edgePadding:insets animated:YES];
+            return ;
+        }  else {
+            if (params[@"coordinate"]) {
+                NSDictionary *coordinate = params[@"coordinate"];
+                mapStatus.centerCoordinate = CLLocationCoordinate2DMake(
+                                                                        [coordinate[@"latitude"] doubleValue],
+                                                                        [coordinate[@"longitude"] doubleValue]);
+            }
         }
         if (params[@"tilt"]) {
             mapStatus.cameraDegree = [params[@"tilt"] floatValue];
