@@ -1,8 +1,8 @@
 {
-  "name": "react-native-amap3d",
-  "version": "1.1.1",
+  "name": "@yz1311/react-native-amap3d",
+  "version": "2.0.4",
   "description": "react-native 高德地图组件，支持 Android + iOS",
-  "author": "Qiu Xiang <i@7c00.cc>",
+  "author": "7c00 <i@7c00.cc>",
   "license": "MIT",
   "keywords": [
     "react-native",
@@ -15,30 +15,36 @@
     "lib/js",
     "lib/android/src",
     "lib/android/build.gradle",
-    "lib/ios"
+    "lib/ios",
+    "react-native.config.js"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/qiuxiang/react-native-amap3d"
+    "url": "https://github.com/yz1311/react-native-amap3d"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "run-android": "node node_modules/react-native/local-cli/cli.js run-android",
-    "release-android": "node node_modules/react-native/local-cli/cli.js run-android --variant=release",
-    "log-android": "node node_modules/react-native/local-cli/cli.js log-android",
+    "dev": "npx typescript -w",
+    "build": "npx typescript",
+    "build-docs": "npx typedoc --out docs/api --excludeNotExported --excludePrivate --excludeProtected --exclude src/prop-types.ts --module commonjs --mode file src",
+    "start": "npx react-native start",
+    "android": "npx react-native  run-android",
+    "release-android": "npx react-native run-android --variant=release",
     "reload": "adb reverse tcp:8081 tcp:8081 && adb shell input text rr",
-    "run-ios": "node node_modules/react-native/local-cli/cli.js run-ios"
+    "ios": "npx react-native run-ios"
   },
   "devDependencies": {
-    "metro-react-native-babel-preset": "0.51.1",
-    "react": "16.6.3",
-    "react-native": "0.58.4",
-    "react-navigation": "^1.5.11"
-  },
-  "rnpm": {
-    "android": {
-      "sourceDir": "lib/android"
-    }
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/native": "^5.5.0",
+    "@react-navigation/stack": "^5.4.1",
+    "@types/react-native": "^0.63.1",
+    "react": "16.13.1",
+    "react-native": "^0.63.1",
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-safe-area-context": "^3.1.1",
+    "react-native-screens": "^2.9.0"
   },
   "prettier": {
     "printWidth": 100

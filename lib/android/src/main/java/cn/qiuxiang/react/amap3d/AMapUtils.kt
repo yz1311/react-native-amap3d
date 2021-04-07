@@ -7,31 +7,41 @@ import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
+import kotlin.math.abs
 
 fun Float.toPx(): Int {
     return (this * Resources.getSystem().displayMetrics.density).toInt()
 }
 
 fun ReadableMap.toLatLng(): LatLng {
-    return LatLng(this.getDouble("latitude"), this.getDouble("longitude"))
+    return LatLng(getDouble("latitude"), getDouble("longitude"))
 }
 
 fun ReadableArray.toLatLngList(): ArrayList<LatLng> {
-    return ArrayList((0..(this.size() - 1)).map { this.getMap(it)!!.toLatLng() })
+    return ArrayList((0 until size()).map { getMap(it)!!.toLatLng() })
 }
 
 fun LatLng.toWritableMap(): WritableMap {
     val map = Arguments.createMap()
-    map.putDouble("latitude", this.latitude)
-    map.putDouble("longitude", this.longitude)
+    map.putDouble("latitude", latitude)
+    map.putDouble("longitude", longitude)
+    return map
+}
+
+fun LatLngBounds.toWritableMap(): WritableMap {
+    val map = Arguments.createMap()
+    map.putDouble("latitude", abs((southwest.latitude + northeast.latitude) / 2))
+    map.putDouble("longitude", abs((southwest.longitude + northeast.longitude) / 2))
+    map.putDouble("latitudeDelta", abs(southwest.latitude - northeast.latitude))
+    map.putDouble("longitudeDelta", abs(southwest.longitude - northeast.longitude))
     return map
 }
 
 fun ReadableMap.toLatLngBounds(): LatLngBounds {
-    val latitude = this.getDouble("latitude")
-    val longitude = this.getDouble("longitude")
-    val latitudeDelta = this.getDouble("latitudeDelta")
-    val longitudeDelta = this.getDouble("longitudeDelta")
+    val latitude = getDouble("latitude")
+    val longitude = getDouble("longitude")
+    val latitudeDelta = getDouble("latitudeDelta")
+    val longitudeDelta = getDouble("longitudeDelta")
     return LatLngBounds(
             LatLng(latitude - latitudeDelta / 2, longitude - longitudeDelta / 2),
             LatLng(latitude + latitudeDelta / 2, longitude + longitudeDelta / 2)
