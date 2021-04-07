@@ -50,11 +50,66 @@ export interface PolylineProps {
    * 是否绘制虚线
    */
   dashed?: boolean;
+  /**
+   * 虚线的类型
+   */
+  dashedLineType?: dashedLineTypes;
+  dashedCapType?: dashedCapTypes
+  dashedJoinType?: dashedJoinTypes
 
   /**
    * 点击事件
    */
   onPress?: () => void;
+}
+
+enum  dashedLineTypes {
+  /**
+   * 不画虚线
+   */
+  NONE = -1,
+  /**
+   * 圆点样式
+   */
+  CIRCLE = 0,
+  /**
+   * 方块样式
+   */
+  SUQUARE = 1,
+}
+
+enum  dashedCapTypes {
+  /**
+   * 普通头
+   */
+  LineCapButt = 0,
+  /**
+   * 扩展头
+   */
+  LineCapSquare,
+  /**
+   * 箭头
+   */
+  LineCapArrow,
+  /**
+   * 圆形头
+   */
+  LineCapRound,
+}
+
+enum  dashedJoinTypes {
+  /**
+   * 斜面连接点
+   */
+  LineJoinBevel = 0,
+  /**
+   * 斜接连接点
+   */
+  LineJoinMiter,
+  /**
+   *  圆角连接点
+   */
+  LineJoinRound,
 }
 
 /**
@@ -71,11 +126,17 @@ export default class Polyline extends React.PureComponent<PolylineProps> {
     gradient: PropTypes.bool,
     geodesic: PropTypes.bool,
     dashed: PropTypes.bool,
+    dashedLineType: PropTypes.number,
+    dashedCapType: PropTypes.number,
+    dashedJoinType: PropTypes.number,
     onPress: PropTypes.func
   };
 
   static defaultProps = {
-    colors: []
+    colors: [],
+    dashedLineType: dashedLineTypes.NONE,
+    dashedCapType: dashedCapTypes.LineCapButt,
+    dashedJoinType: dashedJoinTypes.LineJoinBevel,
   };
 
   render() {

@@ -47,6 +47,24 @@ class AMapPolyline(context: Context) : ReactViewGroup(context), AMapOverlay {
             polyline?.isDottedLine = value
         }
 
+    var dashedLineType: Int = -1
+        set(value) {
+            field = value;
+            polyline?.options?.dottedLineType = value
+        }
+
+    var dashedCapType: Int = 0
+        set(value) {
+            field = value;
+            polyline?.options?.lineCapType(PolylineOptions.LineCapType.valueOf(value))
+        }
+
+    var dashedJoinType: Int = 0
+        set(value) {
+            field = value;
+            polyline?.options?.lineJoinType(PolylineOptions.LineJoinType.valueOf(value))
+        }
+
     var gradient: Boolean = false
 
     fun setCoordinates(coordinates: ReadableArray) {
@@ -67,6 +85,9 @@ class AMapPolyline(context: Context) : ReactViewGroup(context), AMapOverlay {
                 .useGradient(gradient)
                 .geodesic(geodesic)
                 .setDottedLine(dashed)
+                .setDottedLineType(dashedLineType)
+                .lineCapType(PolylineOptions.LineCapType.valueOf(dashedCapType))
+                .lineJoinType(PolylineOptions.LineJoinType.valueOf(dashedJoinType))
                 .zIndex(zIndex))
     }
 

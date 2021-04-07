@@ -11,6 +11,9 @@
     UIColor *_color;
     NSArray *_colors;
     BOOL _dashed;
+    MALineDashType _dashedLineType;
+    MALineCapType _dashedCapType;
+    MALineJoinType _dashedJoinType;
     BOOL _gradient;
 }
 
@@ -74,7 +77,32 @@
 
 - (void)setDashed:(BOOL)dashed {
     _dashed = dashed;
-    _renderer.lineDash = dashed;
+    _renderer.lineDashType= dashed? kMALineDashTypeDot : kMALineDashTypeNone;
+}
+
+- (void)setDashedLineType:(int)dashedLineType {
+    switch (dashedLineType) {
+        case 0:
+            _dashedLineType = kMALineDashTypeSquare;
+            break;
+        case 1:
+            _dashedLineType = kMALineDashTypeDot;
+            break;
+        default:
+            _dashedLineType = kMALineDashTypeNone;
+            break;
+    }
+    _renderer.lineDashType = _dashedLineType;
+}
+
+- (void)setDashedCapType:(int)dashedCapType {
+    _dashedCapType = dashedCapType;
+    _renderer.lineCapType = dashedCapType;
+}
+
+- (void)setDashedJoinType:(int)dashedJoinType {
+    _dashedJoinType = dashedJoinType;
+    _renderer.lineJoinType = dashedJoinType;
 }
 
 - (void)setGradient:(BOOL)gradient {
@@ -99,7 +127,9 @@
         _renderer.lineWidth = _width;
         _renderer.strokeColor = _color;
         _renderer.strokeColors = _colors;
-        _renderer.lineDash = _dashed;
+        _renderer.lineDashType= _dashed? _dashedLineType : kMALineDashTypeNone;
+        _renderer.lineCapType= _dashedCapType;
+        _renderer.lineJoinType= _dashedJoinType;
         _renderer.gradient = _gradient;
     }
     return _renderer;
