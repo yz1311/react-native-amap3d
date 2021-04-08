@@ -55,6 +55,21 @@ internal class AMapPolylineManager : SimpleViewManager<AMapPolyline>() {
         polyline.dashed = dashed
     }
 
+    @ReactProp(name = "dashedLineType")
+    fun setDashedLineType(polyline: AMapPolyline, dashedLineType: Int) {
+        polyline.dashedLineType = dashedLineType
+    }
+
+    @ReactProp(name = "dashedCapType")
+    fun setDashedCapType(polyline: AMapPolyline, dashedCapType: Int) {
+        polyline.dashedCapType = dashedCapType
+    }
+
+    @ReactProp(name = "dashedJoinType")
+    fun setDashedJoinType(polyline: AMapPolyline, dashedJoinType: Int) {
+        polyline.dashedJoinType = dashedJoinType
+    }
+
     @ReactProp(name = "gradient")
     fun setGradient(polyline: AMapPolyline, gradient: Boolean) {
         polyline.gradient = gradient
