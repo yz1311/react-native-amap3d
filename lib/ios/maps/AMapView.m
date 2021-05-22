@@ -75,6 +75,30 @@
     [self updateUserLocationRepresentation:_locationStyle];
 }
 
+- (void)setCustomMapStyleId:(NSString *)styleId {
+    MAMapCustomStyleOptions *options = [[MAMapCustomStyleOptions alloc] init];
+    if (!styleId) {
+        options.styleId = styleId;
+    }
+    [self setCustomMapStyleOptions:options];
+    self.customMapStyleEnabled = styleId != nil;
+}
+
+- (void)setCustomMapEnabled:(BOOL)enabled {
+    if(enabled) {
+        NSString *path =   [[NSBundle mainBundle] pathForResource:@"style" ofType:@"data"];
+        NSData *data = [NSData dataWithContentsOfFile:path];
+        NSString *extrapath = [[NSBundle mainBundle] pathForResource:@"style_extra" ofType:@"data"];
+        NSData *extradata = [NSData dataWithContentsOfFile:extrapath];
+        MAMapCustomStyleOptions *options = [[MAMapCustomStyleOptions alloc] init];
+        options.styleData = data;
+        options.styleExtraData = extradata;
+        [self setCustomMapStyleOptions:options];
+    }
+    [self setCustomMapStyleEnabled:enabled];
+}
+
+
 // 如果在地图未加载的时候调用改方法，需要先将 region 存起来，等地图加载完成再设置
 - (void)setRegion:(MACoordinateRegion)region {
     if (self.loaded) {

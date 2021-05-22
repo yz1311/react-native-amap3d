@@ -3,6 +3,7 @@ package cn.qiuxiang.react.amap3d.maps
 import android.view.View
 import cn.qiuxiang.react.amap3d.toLatLng
 import com.amap.api.maps.CameraUpdateFactory
+import com.amap.api.maps.model.CustomMapStyleOptions
 import com.amap.api.maps.model.MyLocationStyle
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -10,6 +11,7 @@ import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
+import java.lang.Exception
 
 @Suppress("unused")
 internal class AMapViewManager : ViewGroupManager<AMapView>() {
@@ -17,11 +19,14 @@ internal class AMapViewManager : ViewGroupManager<AMapView>() {
         const val SET_STATUS = 1
     }
 
+    var context:ThemedReactContext? = null;
+
     override fun getName(): String {
         return "AMapView"
     }
 
     override fun createViewInstance(reactContext: ThemedReactContext): AMapView {
+        context = reactContext;
         return AMapView(reactContext)
     }
 
@@ -190,6 +195,43 @@ internal class AMapViewManager : ViewGroupManager<AMapView>() {
     @ReactProp(name = "locationStyle")
     fun setLocationStyle(view: AMapView, style: ReadableMap) {
         view.setLocationStyle(style)
+    }
+
+    @ReactProp(name = "customMapStyleId")
+    fun setCustomMapStyle(view: AMapView, styleId: String) {
+        if(styleId != null && styleId != "") {
+            view.map.setCustomMapStyle(
+                    CustomMapStyleOptions()
+                            .setEnable(true)
+                            .setStyleId(styleId)
+            );
+        } else {
+            view.map.setCustomMapStyle(
+                    CustomMapStyleOptions()
+                            .setEnable(false)
+            );
+        }
+    }
+
+    @ReactProp(name = "customMapEnabled")
+    fun setCustomMapEnabled(view: AMapView, enabled: Boolean) {
+        try {
+            if(enabled) {
+                view.map.setCustomMapStyle(
+                        CustomMapStyleOptions()
+                                .setEnable(true)
+                                .setStyleData(context!!.assets.open("style.data").readBytes())
+                                .setStyleExtraData(context!!.assets.open("style_extra.data").readBytes())
+                );
+            } else {
+                view.map.setCustomMapStyle(
+                        CustomMapStyleOptions()
+                                .setEnable(false)
+                );
+            }
+        } catch (e: Exception) {
+
+        }
     }
 
     @ReactProp(name = "locationType")

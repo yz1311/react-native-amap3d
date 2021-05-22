@@ -181,6 +181,16 @@ export interface MapViewProps {
    * 动画完成事件
    */
   onAnimateFinish?: () => void;
+
+  /**
+   * 是否开启在线资源id(收费功能，需要去高德平台开启)
+   */
+  customMapStyleId?: string;
+
+  /**
+   * 是否开启本地自定义资源(需在原生加入资源)
+   */
+  customMapEnabled?: boolean;
 }
 
 const events = [

@@ -43,6 +43,8 @@ RCT_EXPORT_VIEW_PROPERTY(tilt, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(rotation, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(distanceFilter, CLLocationDistance)
 RCT_EXPORT_VIEW_PROPERTY(locationStyle, LocationStyle)
+RCT_EXPORT_VIEW_PROPERTY(customMapStyleId, NSString)
+RCT_EXPORT_VIEW_PROPERTY(customMapEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(mapLanguage, NSNumber)
 
 RCT_EXPORT_VIEW_PROPERTY(onClick, RCTBubblingEventBlock)
